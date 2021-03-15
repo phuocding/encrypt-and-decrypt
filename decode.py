@@ -36,7 +36,9 @@ def main():
     print("Hello Phuoc!")
 
     while True:
-        option = input("Please choose MODE (e for encrypt, d for decrypt): ")
+        option = input(
+            "Please choose MODE (e for encrypt, d for decrypt, exit for exit): "
+        )
 
         if option == "e":
             _key = input("typing key: ")
@@ -48,6 +50,9 @@ def main():
             _enc = input("typing message: ")
             decode(_key, _enc)
             continue
+        elif option == "exit":
+            print("See you soon!!!")
+            break
         else:
             print("please choose again")
             continue
