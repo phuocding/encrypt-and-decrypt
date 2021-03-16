@@ -1,7 +1,29 @@
 import base64
+import os.path
 
 
-def encode(key, clear):
+def checkFile(title, file_name, hint_or_show):
+    if os.path.isfile(file_name):
+        # print("File exist")
+
+        f = open(file_name, "a")
+        f.write(title + ": " + hint_or_show + "\n")
+        f.close()
+
+        print("Saved")
+    else:
+        print("File not exist")
+        print("Creating a file...")
+
+        f = open(file_name, "x")
+        f = open(file_name, "a")
+        f.write(title + ": " + hint_or_show + "\n")
+        f.close()
+
+        print("Saved")
+
+
+def encode(title, key, clear):
     enc = []
 
     for i in range(len(clear)):
@@ -15,11 +37,12 @@ def encode(key, clear):
 
     # join list and encode
     j_enc = "".join(enc).encode()
+    hint = base64.urlsafe_b64encode(j_enc).decode()
 
-    print(base64.urlsafe_b64encode(j_enc).decode())
+    checkFile(title, "decode.txt", hint)
 
 
-def decode(key, enc):
+def decode(title, key, enc):
     dec = []
 
     enc = base64.urlsafe_b64decode(enc).decode()
@@ -29,7 +52,9 @@ def decode(key, enc):
 
         dec.append(dec_c)
 
-    print("".join(dec))
+    show = "".join(dec)
+
+    checkFile(title, "encode.txt", show)
 
 
 def main():
@@ -41,14 +66,18 @@ def main():
         )
 
         if option == "e":
-            _key = input("typing key: ")
+            _title = input("enter the title: ")
+            _key = input("typing key (remember that if you want to encode): ")
             _clear = input("typing message: ")
-            encode(_key, _clear)
+            encode(_title, _key, _clear)
             continue
         elif option == "d":
-            _key = input("typing key: ")
-            _enc = input("typing message: ")
-            decode(_key, _enc)
+            _title = input("enter the title: ")
+            _key = input(
+                "typing key (if you didn't remember, message show incorrectly): "
+            )
+            _enc = input("typing message hint: ")
+            decode(_title, _key, _enc)
             continue
         elif option == "exit":
             print("See you soon!!!")
